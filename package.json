@@ -1,0 +1,71 @@
+{
+  "name": "whatsapp-linux",
+  "version": "0.1.0",
+  "description": "Unofficial Chromium-based WhatsApp Web wrapper for Linux",
+  "homepage": "https://github.com/sreekarnv/whatsapp-linux",
+  "author": {
+    "name": "Sreekar Nutulapati"
+  },
+  "private": true,
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"pnpm dev:vite\" \"pnpm dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "wait-on http://localhost:1420 && tsc -p electron/tsconfig.json && electron dist-electron/main.js",
+    "build": "tsc && vite build && tsc -p electron/tsconfig.json",
+    "dist": "pnpm build && electron-builder",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router": "^8.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "concurrently": "^9.2.1",
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12",
+    "prettier": "^3.9.6",
+    "sass": "^1.102.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "wait-on": "^8.0.4"
+  },
+  "build": {
+    "appId": "com.sreekarnv.whatsapp-linux",
+    "productName": "WhatsApp Linux",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "dist-electron/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/icons/icon.png",
+        "to": "icon.png"
+      }
+    ],
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ],
+      "category": "Network",
+      "icon": "build/icons/icon.png",
+      "maintainer": "Sreekar NV <sreekar@localhost>",
+      "synopsis": "Unofficial WhatsApp Web wrapper for Linux",
+      "description": "A Chromium-based Electron desktop wrapper for the official WhatsApp Web site."
+    }
+  },
+  "packageManager": "pnpm@11.21.0"
+}
