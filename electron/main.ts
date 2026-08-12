@@ -76,6 +76,7 @@ function createSettingsWindow(visible: boolean) {
 
   settingsWindow = new BrowserWindow({
     title: "WhatsApp Linux Settings",
+    autoHideMenuBar: true,
     width: 920,
     height: 680,
     minWidth: 640,
@@ -112,6 +113,7 @@ function createWhatsAppWindow(visible: boolean) {
 
   whatsappWindow = new BrowserWindow({
     title: "WhatsApp Linux",
+    autoHideMenuBar: true,
     width: 1100,
     height: 760,
     minWidth: 720,
@@ -272,6 +274,7 @@ ipcMain.handle("notifications:test", () => {
 });
 
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
   createTray();
   registerShortcuts();
   createWhatsAppWindow(!settings.startMinimized);
