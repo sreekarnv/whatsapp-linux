@@ -15,7 +15,7 @@
     "dev:vite": "vite",
     "dev:electron": "wait-on http://localhost:1420 && tsc -p electron/tsconfig.json && electron dist-electron/main.js",
     "build": "tsc && vite build && tsc -p electron/tsconfig.json",
-    "dist": "pnpm build && electron-builder",
+    "dist": "pnpm build && electron-builder --publish never",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview"
