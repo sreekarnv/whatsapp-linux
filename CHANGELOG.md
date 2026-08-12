@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 - 2026-08-12
+
+- Removed the settings UI and kept controls in the Electron tray.
+- Simplified the app to a WhatsApp-only Electron wrapper.
+
 ## 0.1.0 - 2026-08-12
 
 - Added Electron/Chromium WhatsApp Web wrapper.
