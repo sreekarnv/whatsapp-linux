@@ -4,7 +4,8 @@
   "description": "Unofficial Chromium-based WhatsApp Web wrapper for Linux",
   "homepage": "https://github.com/sreekarnv/whatsapp-linux",
   "author": {
-    "name": "Sreekar Nutulapati"
+    "name": "Sreekar Nutulapati",
+    "email": "sreekarnv1@gmail.com"
   },
   "private": true,
   "type": "module",
@@ -62,7 +63,7 @@
       ],
       "category": "Network",
       "icon": "build/icons/icon.png",
-      "maintainer": "Sreekar NV <sreekar@localhost>",
+      "maintainer": "Sreekar Nutulapati <sreekarnv1@gmail.com>",
       "synopsis": "Unofficial WhatsApp Web wrapper for Linux",
       "description": "A Chromium-based Electron desktop wrapper for the official WhatsApp Web site."
     }

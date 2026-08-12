@@ -53,6 +53,25 @@ pnpm dist
 
 Artifacts are written under `release/`.
 
+## GitHub Releases
+
+GitHub Releases are the only distribution channel. Use the AppImage for portable use, or the `.deb` package for Debian/Ubuntu installs.
+
+Releases are created by pushing a version tag:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The release workflow builds the app, uploads the AppImage and `.deb`, and includes `sha256sums.txt`.
+
+Verify downloaded artifacts from the release directory with:
+
+```bash
+sha256sum -c sha256sums.txt
+```
+
 ## Features
 
 The app provides a persistent Chromium WhatsApp Web session, system tray controls, close-to-tray behavior, local settings, startup launch preference, browser-safe external-link handling, test notifications, microphone/camera permission handling for calls, and development-only devtools shortcut support.

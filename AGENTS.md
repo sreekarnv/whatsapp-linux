@@ -7,6 +7,7 @@
 - Verify code changes with `pnpm format:check` and `pnpm build`; there is no test script configured.
 - Format with `pnpm format` before large TS/SCSS edits.
 - Package Linux artifacts with `pnpm dist`; output goes to ignored `release/`.
+- GitHub-only releases are tag-based: push `v*` tags to run `.github/workflows/release.yml` and upload AppImage, `.deb`, and checksums.
 
 ## Architecture
 
