@@ -12,32 +12,18 @@
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
-    "dev": "concurrently -k \"pnpm dev:vite\" \"pnpm dev:electron\"",
-    "dev:vite": "vite",
-    "dev:electron": "wait-on http://localhost:1420 && tsc -p electron/tsconfig.json && electron dist-electron/main.js",
-    "build": "tsc && vite build && tsc -p electron/tsconfig.json",
+    "dev": "tsc -p electron/tsconfig.json && electron dist-electron/main.js",
+    "build": "tsc -p electron/tsconfig.json",
     "dist": "pnpm build && electron-builder --publish never",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "preview": "vite preview"
+    "format:check": "prettier --check ."
   },
-  "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router": "^8.3.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^4.6.0",
-    "concurrently": "^9.2.1",
     "electron": "^37.2.6",
     "electron-builder": "^26.0.12",
     "prettier": "^3.9.6",
-    "sass": "^1.102.0",
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5",
-    "wait-on": "^8.0.4"
+    "typescript": "~5.8.3"
   },
   "build": {
     "appId": "com.sreekarnv.whatsapp-linux",
@@ -47,7 +33,6 @@
       "output": "release"
     },
     "files": [
-      "dist/**",
       "dist-electron/**",
       "package.json"
     ],

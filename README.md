@@ -35,7 +35,8 @@ sha256sum -c sha256sums.txt
 
 - Opens `https://web.whatsapp.com` in Electron/Chromium.
 - Keeps a persistent WhatsApp Web session.
-- Provides tray controls and close-to-tray behavior.
+- Provides tray controls for show, hide, reload, reset session, and quit.
+- Closing the window hides it to the tray.
 - Allows microphone, camera, display capture, media, and notification permissions for WhatsApp calls.
 - Opens unrelated external links in the system browser.
 
@@ -92,6 +93,12 @@ git push origin v0.1.0
 - Voice and video calls depend on Electron/Chromium and the Linux desktop environment.
 - Builds are unsigned.
 - This is a personal project provided as-is, with no support or compatibility guarantees.
+
+## Shortcuts
+
+- `Ctrl+Shift+W`: show or hide WhatsApp.
+- `Ctrl+R`: reload WhatsApp Web.
+- `Ctrl+Shift+I`: toggle developer tools in development builds only.
 
 ## License
 

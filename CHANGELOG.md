@@ -5,6 +5,6 @@
 - Added Electron/Chromium WhatsApp Web wrapper.
 - Added persistent WhatsApp Web session support.
 - Added tray controls, close-to-tray behavior, and global shortcuts.
-- Added settings UI with React Router and local Electron IPC.
+- Added tray controls for showing, hiding, reloading, and resetting WhatsApp.
 - Added microphone, camera, display capture, media, and notification permissions for WhatsApp calls.
 - Added Linux AppImage and Debian package builds.

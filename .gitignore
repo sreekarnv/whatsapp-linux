@@ -8,14 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
 dist-electron
 release
 dist-ssr
 *.local
-
-# Electron local cache/output
-node_modules/.vite
 
 # Editor directories and files
 .vscode/*

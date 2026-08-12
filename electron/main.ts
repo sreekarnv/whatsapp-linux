@@ -1,32 +1,7 @@
-import {
-  app,
-  BrowserWindow,
-  globalShortcut,
-  ipcMain,
-  Menu,
-  nativeImage,
-  Notification,
-  session,
-  shell,
-  Tray,
-} from "electron";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { app, BrowserWindow, globalShortcut, Menu, nativeImage, session, shell, Tray } from "electron";
+import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-
-type AppSettings = {
-  startMinimized: boolean;
-  launchOnStartup: boolean;
-  showNotifications: boolean;
-  keepRunningInTray: boolean;
-};
-
-const DEFAULT_SETTINGS: AppSettings = {
-  startMinimized: false,
-  launchOnStartup: false,
-  showNotifications: true,
-  keepRunningInTray: true,
-};
 
 const APP_TITLE = "WhatsApp Linux";
 const WHATSAPP_URL = "https://web.whatsapp.com/";
@@ -45,69 +20,9 @@ if (!gotSingleInstanceLock) {
   app.quit();
 }
 
-let settings = loadSettings();
 let tray: Tray | null = null;
-let settingsWindow: BrowserWindow | null = null;
 let whatsappWindow: BrowserWindow | null = null;
 let isQuitting = false;
-
-function settingsPath() {
-  return join(app.getPath("userData"), "settings.json");
-}
-
-function loadSettings(): AppSettings {
-  try {
-    const path = settingsPath();
-    if (!existsSync(path)) return DEFAULT_SETTINGS;
-    return { ...DEFAULT_SETTINGS, ...JSON.parse(readFileSync(path, "utf8")) };
-  } catch (error) {
-    console.error("Ignoring invalid settings JSON:", error);
-    return DEFAULT_SETTINGS;
-  }
-}
-
-function saveSettings(nextSettings: AppSettings): AppSettings {
-  const path = settingsPath();
-  mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, JSON.stringify(nextSettings, null, 2));
-  settings = nextSettings;
-  app.setLoginItemSettings({ openAtLogin: nextSettings.launchOnStartup });
-  return settings;
-}
-
-function createSettingsWindow(visible: boolean) {
-  if (settingsWindow && !settingsWindow.isDestroyed()) {
-    if (visible) showWindow(settingsWindow);
-    return settingsWindow;
-  }
-
-  settingsWindow = new BrowserWindow({
-    title: `${APP_TITLE} Settings`,
-    autoHideMenuBar: true,
-    width: 920,
-    height: 680,
-    minWidth: 640,
-    minHeight: 520,
-    show: visible,
-    webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
-      preload: join(__dirname, "preload.js"),
-    },
-  });
-
-  settingsWindow.on("closed", () => {
-    settingsWindow = null;
-  });
-
-  if (isDev) {
-    settingsWindow.loadURL("http://localhost:1420");
-  } else {
-    settingsWindow.loadFile(join(__dirname, "../dist/index.html"));
-  }
-
-  return settingsWindow;
-}
 
 function createWhatsAppWindow(visible: boolean) {
   if (whatsappWindow && !whatsappWindow.isDestroyed()) {
@@ -152,7 +67,7 @@ function createWhatsAppWindow(visible: boolean) {
   });
 
   whatsappWindow.on("close", (event) => {
-    if (isQuitting || !settings.keepRunningInTray) return;
+    if (isQuitting) return;
     event.preventDefault();
     whatsappWindow?.hide();
   });
@@ -230,7 +145,8 @@ function createTray() {
     Menu.buildFromTemplate([
       { label: "Show WhatsApp", click: () => showWindow(createWhatsAppWindow(true)) },
       { label: "Hide WhatsApp", click: () => whatsappWindow?.hide() },
-      { label: "Settings", click: () => showWindow(createSettingsWindow(true)) },
+      { label: "Reload WhatsApp", click: reloadWhatsApp },
+      { label: "Reset WhatsApp Session", click: () => resetWhatsAppSession() },
       { type: "separator" },
       { label: "Quit", click: quitApp },
     ]),
@@ -272,24 +188,11 @@ function quitApp() {
   app.quit();
 }
 
-ipcMain.handle("settings:get", () => settings);
-ipcMain.handle("settings:save", (_event, nextSettings: AppSettings) => saveSettings(nextSettings));
-ipcMain.handle("whatsapp:reset-session", () => resetWhatsAppSession());
-ipcMain.handle("whatsapp:reload", () => reloadWhatsApp());
-ipcMain.handle("whatsapp:open-browser", () => shell.openExternal(WHATSAPP_URL));
-ipcMain.handle("notifications:test", () => {
-  if (Notification.isSupported()) {
-    new Notification({ title: APP_TITLE, body: "Notifications are working." }).show();
-    return true;
-  }
-  return false;
-});
-
 app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
   createTray();
   registerShortcuts();
-  createWhatsAppWindow(!settings.startMinimized);
+  createWhatsAppWindow(true);
 });
 
 app.on("activate", () => {
