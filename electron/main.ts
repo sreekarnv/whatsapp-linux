@@ -39,6 +39,12 @@ app.commandLine.appendSwitch("log-level", "3");
 app.setName(APP_TITLE);
 app.setPath("userData", join(app.getPath("appData"), APP_ID));
 
+const gotSingleInstanceLock = app.requestSingleInstanceLock();
+
+if (!gotSingleInstanceLock) {
+  app.quit();
+}
+
 let settings = loadSettings();
 let tray: Tray | null = null;
 let settingsWindow: BrowserWindow | null = null;
@@ -288,6 +294,10 @@ app.whenReady().then(() => {
 
 app.on("activate", () => {
   createWhatsAppWindow(true);
+});
+
+app.on("second-instance", () => {
+  showWindow(createWhatsAppWindow(true));
 });
 
 app.on("window-all-closed", () => {});
