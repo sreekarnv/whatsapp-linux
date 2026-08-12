@@ -28,6 +28,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   keepRunningInTray: true,
 };
 
+const APP_TITLE = "WhatsApp Linux";
 const WHATSAPP_URL = "https://web.whatsapp.com/";
 const WHATSAPP_HOST = "web.whatsapp.com";
 const APP_ID = "com.sreekarnv.whatsapp-linux";
@@ -35,7 +36,7 @@ const isDev = !app.isPackaged;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.commandLine.appendSwitch("log-level", "3");
-app.setName("WhatsApp Linux");
+app.setName(APP_TITLE);
 app.setPath("userData", join(app.getPath("appData"), APP_ID));
 
 let settings = loadSettings();
@@ -75,7 +76,7 @@ function createSettingsWindow(visible: boolean) {
   }
 
   settingsWindow = new BrowserWindow({
-    title: "WhatsApp Linux Settings",
+    title: `${APP_TITLE} Settings`,
     autoHideMenuBar: true,
     width: 920,
     height: 680,
@@ -112,7 +113,7 @@ function createWhatsAppWindow(visible: boolean) {
   configureWhatsAppSession(whatsappSession);
 
   whatsappWindow = new BrowserWindow({
-    title: "WhatsApp Linux",
+    title: APP_TITLE,
     autoHideMenuBar: true,
     width: 1100,
     height: 760,
@@ -137,6 +138,11 @@ function createWhatsAppWindow(visible: boolean) {
     if (isAllowedWhatsAppNavigation(url)) return;
     event.preventDefault();
     openExternalUrl(url);
+  });
+
+  whatsappWindow.on("page-title-updated", (event) => {
+    event.preventDefault();
+    whatsappWindow?.setTitle(APP_TITLE);
   });
 
   whatsappWindow.on("close", (event) => {
@@ -213,7 +219,7 @@ function createTray() {
   const iconPath = isDev ? join(__dirname, "../build/icons/32x32.png") : join(process.resourcesPath, "icon.png");
   const icon = existsSync(iconPath) ? nativeImage.createFromPath(iconPath) : nativeImage.createEmpty();
   tray = new Tray(icon);
-  tray.setToolTip("WhatsApp Linux");
+  tray.setToolTip(APP_TITLE);
   tray.setContextMenu(
     Menu.buildFromTemplate([
       { label: "Show WhatsApp", click: () => showWindow(createWhatsAppWindow(true)) },
@@ -267,7 +273,7 @@ ipcMain.handle("whatsapp:reload", () => reloadWhatsApp());
 ipcMain.handle("whatsapp:open-browser", () => shell.openExternal(WHATSAPP_URL));
 ipcMain.handle("notifications:test", () => {
   if (Notification.isSupported()) {
-    new Notification({ title: "WhatsApp Linux", body: "Notifications are working." }).show();
+    new Notification({ title: APP_TITLE, body: "Notifications are working." }).show();
     return true;
   }
   return false;
