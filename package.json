@@ -7,6 +7,7 @@
     "name": "Sreekar Nutulapati",
     "email": "sreekarnv1@gmail.com"
   },
+  "license": "MIT",
   "private": true,
   "type": "module",
   "main": "dist-electron/main.js",
