@@ -39,13 +39,21 @@ sha256sum -c sha256sums.txt
 - Closing the window hides it to the tray.
 - Allows microphone, camera, display capture, media, and notification permissions for WhatsApp calls.
 - Opens unrelated external links in the system browser.
+- Registers the `whatsapp-linux://` URL scheme and translates incoming
+  `whatsapp-linux://send?text=...` links to the matching
+  `https://web.whatsapp.com/send?text=...` WhatsApp Web page.
 
 ## What It Does Not Do
 
-- Does not implement WhatsApp protocols.
 - Does not scrape, read, export, duplicate, or log messages.
 - Does not bypass WhatsApp authentication.
 - Does not automate WhatsApp.
+- Does not intercept the plain `https://api.whatsapp.com/send?...` link
+  shared from sites like YouTube. Linux routes that HTTPS URL to your
+  default browser. To hand a YouTube share to this app, redirect the
+  page from a helper of your choice (for example a browser extension
+  or bookmarklet) to `whatsapp-linux://send?text=<encoded url>`,
+  then run `xdg-open` on that custom-scheme link.
 
 ## Development
 
@@ -92,6 +100,10 @@ git push origin v0.1.0
 - WhatsApp Web can change and break wrapper behavior.
 - Voice and video calls depend on Electron/Chromium and the Linux desktop environment.
 - Builds are unsigned.
+- Deep-link support relies on the Linux desktop association installed
+  by the `.deb` package (or by an integrated AppImage). A portable
+  AppImage that is not integrated with the desktop environment will
+  not receive `whatsapp-linux://` URLs from the OS.
 - This is a personal project provided as-is, with no support or compatibility guarantees.
 
 ## Shortcuts

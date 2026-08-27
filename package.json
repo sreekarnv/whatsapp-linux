@@ -52,7 +52,15 @@
       "maintainer": "Sreekar Nutulapati <sreekarnv1@gmail.com>",
       "synopsis": "Unofficial WhatsApp Web wrapper for Linux",
       "description": "A Chromium-based Electron desktop wrapper for the official WhatsApp Web site."
-    }
+    },
+    "protocols": [
+      {
+        "name": "WhatsApp Linux Deep Link",
+        "schemes": [
+          "whatsapp-linux"
+        ]
+      }
+    ]
   },
   "packageManager": "pnpm@11.21.0"
 }
