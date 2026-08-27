@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 - 2026-08-27
+
+- Registered the `whatsapp-linux://` URL scheme via Linux MIME association so installed builds can receive share intents.
+- Added deep-link handling on cold start (`process.argv`) and warm start (`second-instance`).
+- Translated incoming `whatsapp-linux://send?text=...` links to `https://web.whatsapp.com/send?text=...`.
+
 ## 0.1.1 - 2026-08-12
 
 - Removed the settings UI and kept controls in the Electron tray.
